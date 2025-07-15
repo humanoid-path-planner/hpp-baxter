@@ -2,15 +2,12 @@
 # Copyright (c) 2016, 2020 CNRS Authors: Joseph Mirabel, Guilhem Saurel
 #
 
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.22)
 
 set(PROJECT_NAME hpp-baxter)
 set(PROJECT_DESCRIPTION "Wrappers for Baxter robot in HPP.")
 
 set(PROJECT_USE_CMAKE_EXPORT TRUE)
-
-option(BUILD_PYTHON_INTERFACE "Build the python bindings" ON)
-option(INSTALL_PYTHON_INTERFACE_ONLY "Install *ONLY* the python bindings" OFF)
 
 # Check if the submodule cmake have been initialized
 set(JRL_CMAKE_MODULES "${CMAKE_CURRENT_LIST_DIR}/cmake")
@@ -24,14 +21,6 @@ else()
       TARGET jrl-cmakemodules::jrl-cmakemodules
       PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
     message(STATUS "JRL cmakemodules found on system at ${JRL_CMAKE_MODULES}")
-  elseif(${CMAKE_VERSION} VERSION_LESS "3.14.0")
-    message(
-      FATAL_ERROR
-        "\nCan't find jrl-cmakemodules. Please either:\n"
-        "  - use git submodule: 'git submodule update --init'\n"
-        "  - or install https://github.com/jrl-umi3218/jrl-cmakemodules\n"
-        "  - or upgrade your CMake version to >= 3.14 to allow automatic fetching\n"
-    )
   else()
     message(STATUS "JRL cmakemodules not found. Let's fetch it.")
     include(FetchContent)
@@ -54,14 +43,12 @@ add_project_dependency(example-robot-data 3.9.1 REQUIRED)
 set(CATKIN_PACKAGE_SHARE_DESTINATION
     ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME})
 
-if(NOT INSTALL_PYTHON_INTERFACE_ONLY)
+if(NOT BUILD_STANDALONE_PYTHON_INTERFACE)
   add_library(${PROJECT_NAME} INTERFACE)
   install(
     TARGETS ${PROJECT_NAME}
     EXPORT ${TARGETS_EXPORT_NAME}
     DESTINATION lib)
-  install(FILES package.xml DESTINATION share/${PROJECT_NAME})
-  install(FILES package.xml DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
   install(FILES urdf/box.urdf urdf/baxter.urdf urdf/baxter_colman.urdf
           DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/urdf)
   install(FILES srdf/box.srdf srdf/baxter.srdf srdf/baxter_manipulation.srdf
