@@ -1,6 +1,6 @@
 <package>
   <name>hpp-baxter</name>
-  <version>6.0.0</version>
+  <version>6.1.0</version>
   <description>
     Wrappers for Baxter robot in HPP.
   </description>
