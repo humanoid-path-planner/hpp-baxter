@@ -12,32 +12,36 @@
 
   outputs =
     inputs:
-    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
-      systems = import inputs.systems;
-      imports = [ inputs.gepetto.flakeModule ];
-      perSystem =
-        {
-          lib,
-          pkgs,
-          self',
-          ...
-        }:
-        {
-          packages = {
-            default = self'.packages.hpp-baxter;
-            hpp-baxter = pkgs.python3Packages.hpp-baxter.overrideAttrs {
-              src = lib.fileset.toSource {
-                root = ./.;
-                fileset = lib.fileset.unions [
-                  ./CMakeLists.txt
-                  ./package.xml
-                  ./src
-                  ./srdf
-                  ./urdf
-                ];
-              };
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } (
+      { lib, self, ... }:
+      {
+        systems = import inputs.systems;
+        imports = [
+          inputs.gepetto.flakeModule
+          { gepetto-pkgs.overlays = [ self.overlays.default ]; }
+        ];
+        flake.overlays.default = _final: prev: {
+          hpp-baxter = prev.hpp-baxter.overrideAttrs {
+            src = lib.fileset.toSource {
+              root = ./.;
+              fileset = lib.fileset.unions [
+                ./CMakeLists.txt
+                ./package.xml
+                ./src
+                ./srdf
+                ./urdf
+              ];
             };
           };
         };
-    };
+        perSystem =
+          { pkgs, self', ... }:
+          {
+            packages = {
+              default = self'.packages.hpp-baxter;
+              hpp-baxter = pkgs.python3Packages.hpp-baxter;
+            };
+          };
+      }
+    );
 }
