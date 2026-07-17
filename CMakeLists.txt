@@ -57,6 +57,7 @@ if(NOT BUILD_STANDALONE_PYTHON_INTERFACE)
     )
 endif()
 if(BUILD_PYTHON_INTERFACE)
+    set(PYTHON_COMPONENTS Interpreter)
     findpython(REQUIRED)
     install(
         FILES

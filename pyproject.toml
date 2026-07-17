@@ -1,5 +1,5 @@
 [build-system]
-build-backend = "cmeel.build"
+build-backend = "cmeel"
 requires = [
   "cmeel[build]",
   "example-robot-data[build]"
@@ -9,10 +9,19 @@ requires = [
 dependencies = [
   "example-robot-data"
 ]
-description = "Wrappers for Baxter robot in HPP."
+description = "Wrappers for Baxter robot in HPP"
 license = "BSD-2-Clause"
 name = "hpp-baxter"
+requires-python = ">= 3.10"
 version = "9.0.0"
+
+[project.urls]
+homepage = "https://github.com/cmake-wheel/hpp-baxter"
+repository = "https://github.com/cmake-wheel/hpp-baxter.git"
+upstream = "https://github.com/humanoid-path-planner/hpp-baxter"
+
+[tool.cmeel]
+has-binaries = false
 
 [tool.ruff]
 extend-exclude = ["cmake"]
