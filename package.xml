@@ -1,7 +1,7 @@
 <?xml version='1.0'?>
 <package format='3'>
   <name>hpp_baxter</name>
-  <version>9.0.0</version>
+  <version>9.0.2</version>
   <description>Wrappers for Baxter robot in HPP</description>
   <author>Joseph Mirabel</author>
   <maintainer email='guilhem.saurel@laas.fr'>Guilhem Saurel</maintainer>
